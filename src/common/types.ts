@@ -56,10 +56,16 @@ export enum Safety {
   ON = 2,
 }
 
+export enum Video {
+  AUTO = 1,
+  PAL60 = 3,
+}
+
 export type Config = {
   cheats: boolean;
   forceProgressive: boolean;
   autoBoot: boolean;
+  video: Video;
   replays: boolean;
   ucf: UCF;
   pal: boolean;

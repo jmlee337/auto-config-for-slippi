@@ -24,6 +24,7 @@ import {
   Lag,
   Mods,
   UCF,
+  Video,
   Widescreen,
 } from '../common/types';
 import { DEFAULT_CONFIG } from '../common/constants';
@@ -210,10 +211,10 @@ export default function ConfigEl() {
                   width: '100%',
                 }}
               >
-                <Typography id="mods-label">Lag</Typography>
+                <Typography id="lag-label">Lag</Typography>
                 <Select
                   size="small"
-                  aria-labelledby="mods-label"
+                  aria-labelledby="lag-label"
                   margin="dense"
                   value={config.lag}
                   onChange={async (ev) => {
@@ -241,10 +242,10 @@ export default function ConfigEl() {
                   width: '100%',
                 }}
               >
-                <Typography id="mods-label">Frozen</Typography>
+                <Typography id="frozen-label">Frozen</Typography>
                 <Select
                   size="small"
-                  aria-labelledby="mods-label"
+                  aria-labelledby="frozen-label"
                   margin="dense"
                   value={config.frozen}
                   onChange={async (ev) => {
@@ -272,10 +273,10 @@ export default function ConfigEl() {
                   width: '100%',
                 }}
               >
-                <Typography id="mods-label">Gameplay</Typography>
+                <Typography id="gameplay-label">Gameplay</Typography>
                 <Select
                   size="small"
-                  aria-labelledby="mods-label"
+                  aria-labelledby="gameplay-label"
                   margin="dense"
                   value={config.gameplay}
                   onChange={async (ev) => {
@@ -304,10 +305,10 @@ export default function ConfigEl() {
                   width: '100%',
                 }}
               >
-                <Typography id="mods-label">Screen</Typography>
+                <Typography id="screen-label">Screen</Typography>
                 <Select
                   size="small"
-                  aria-labelledby="mods-label"
+                  aria-labelledby="screen-label"
                   margin="dense"
                   value={config.widescreen}
                   onChange={async (ev) => {
@@ -448,6 +449,36 @@ export default function ConfigEl() {
                     />
                   }
                 />
+              </ListItem>
+              <ListItem disablePadding>
+                <FormControl
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}
+                >
+                  <Typography id="video-label">Video</Typography>
+                  <Select
+                    size="small"
+                    aria-labelledby="video-label"
+                    margin="dense"
+                    value={config.video}
+                    onChange={async (ev) => {
+                      const newConfig: Config = {
+                        ...config,
+                        video: ev.target.value,
+                      };
+                      await window.electron.setConfig(newConfig);
+                      setConfig(newConfig);
+                    }}
+                  >
+                    <MenuItem value={Video.AUTO}>Auto</MenuItem>
+                    <MenuItem value={Video.PAL60}>Force PAL60</MenuItem>
+                  </Select>
+                </FormControl>
               </ListItem>
             </List>
             <Stack direction="row" justifyContent="end" width="100%">

@@ -14,7 +14,7 @@ import { XMLParser } from 'fast-xml-parser';
 import getSdCards, { writeNincfg } from './sd';
 import isValidISO from './iso';
 import eject from './eject';
-import { Config, SdCard } from '../common/types';
+import { Config, SdCard, Video } from '../common/types';
 import { DEFAULT_CONFIG } from '../common/constants';
 
 const highWaterMark = 1024 * 1024;
@@ -83,6 +83,9 @@ export default function setupIPC(mainWindow: BrowserWindow) {
   });
 
   let config = store.get('config', DEFAULT_CONFIG);
+  if (!config.video) {
+    config.video = Video.AUTO;
+  }
   ipcMain.removeAllListeners('getConfig');
   ipcMain.handle('getConfig', () => config);
   ipcMain.removeAllListeners('setConfig');

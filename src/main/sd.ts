@@ -13,7 +13,7 @@ import { XMLParser } from 'fast-xml-parser';
 import { list } from 'drivelist';
 import { app } from 'electron';
 import isValidISO from './iso';
-import { Config, SdCard } from '../common/types';
+import { Config, SdCard, Video } from '../common/types';
 
 type RemovableDrive = {
   path: string;
@@ -161,7 +161,25 @@ export async function writeNincfg(
   buffer.writeUint32BE(configUint, 8);
 
   // video mode
-  buffer.writeUint32BE(0, 12);
+  switch (config.video) {
+    // high bits
+    // 0000: Auto
+    // 0001: Force
+    // 0002: None
+    // 0004: Force DF
+    // low bits
+    // 0001: PAL50
+    // 0002: PAL60
+    // 0004: NTSC
+    // 0008: MPAL
+    case Video.PAL60:
+      buffer.writeUint32BE(0x00010002, 12);
+      break;
+    default:
+      // Auto
+      buffer.writeUint32BE(0, 12);
+      break;
+  }
 
   // language
   buffer.writeUint32BE(0xffffffff, 16);
