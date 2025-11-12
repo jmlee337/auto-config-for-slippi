@@ -4,6 +4,12 @@ import { Config, SdCard } from '../common/types';
 const electronHandler = {
   getIsoPath: (): Promise<string> => ipcRenderer.invoke('getIsoPath'),
   chooseIsoPath: (): Promise<string> => ipcRenderer.invoke('chooseIsoPath'),
+  getSlippiNintendontPath: (): Promise<string> =>
+    ipcRenderer.invoke('getSlippiNintendontPath'),
+  chooseSlippiNintendontPath: (): Promise<string> =>
+    ipcRenderer.invoke('chooseSlippiNintendontPath'),
+  resetSlippiNintendontPath: (): Promise<string> =>
+    ipcRenderer.invoke('resetSlippiNintendontPath'),
   getCodePath: (): Promise<string> => ipcRenderer.invoke('getCodePath'),
   chooseCodePath: (): Promise<string> => ipcRenderer.invoke('chooseCodePath'),
   resetCodePath: (): Promise<string> => ipcRenderer.invoke('resetCodePath'),

@@ -24,8 +24,25 @@ const forwarderRootPath = app.isPackaged
 const slippiNintendontRootPath = app.isPackaged
   ? path.join(process.resourcesPath, 'assets', 'slippiNintendont')
   : path.join(__dirname, '..', '..', 'assets', 'slippiNintendont');
+const xmlParser = new XMLParser({ parseTagValue: false });
 
-export default function setupIPC(mainWindow: BrowserWindow) {
+async function getSlippiNintendontVersion(slippiNintendontPath: string) {
+  const metaXmlBuffer = await readFile(
+    path.join(slippiNintendontPath, 'meta.xml'),
+  );
+  const metaObj = xmlParser.parse(metaXmlBuffer);
+  if (metaObj?.app?.name !== 'Slippi Nintendont') {
+    throw new Error('bundled meta.xml app name');
+  }
+
+  const { version } = metaObj.app;
+  if (typeof version !== 'string') {
+    throw new Error('bundled meta.xml app version');
+  }
+  return version;
+}
+
+export default async function setupIPC(mainWindow: BrowserWindow) {
   const store = new Store<{
     codePath: string;
     config: Config;
@@ -56,6 +73,40 @@ export default function setupIPC(mainWindow: BrowserWindow) {
     store.set('isoPath', newIsoPath);
     isoPath = newIsoPath;
     return isoPath;
+  });
+
+  let customSlippiNintendontPath = store.get('customSlippiNintendontPath', '');
+  let slippiNintendontVersion = await getSlippiNintendontVersion(
+    customSlippiNintendontPath || slippiNintendontRootPath,
+  );
+  ipcMain.removeAllListeners('getSlippiNintendontPath');
+  ipcMain.handle('getSlippiNintendontPath', () => customSlippiNintendontPath);
+  ipcMain.removeAllListeners('chooseSlippiNintendontPath');
+  ipcMain.handle('chooseSlippiNintendontPath', async () => {
+    const openDialogRes = await dialog.showOpenDialog({
+      properties: ['openDirectory', 'showHiddenFiles'],
+    });
+    if (openDialogRes.canceled) {
+      return customSlippiNintendontPath;
+    }
+    const [newCustomSlippiNintendontPath] = openDialogRes.filePaths;
+    slippiNintendontVersion = await getSlippiNintendontVersion(
+      newCustomSlippiNintendontPath,
+    );
+
+    store.set('customSlippiNintendontPath', newCustomSlippiNintendontPath);
+    customSlippiNintendontPath = newCustomSlippiNintendontPath;
+    return customSlippiNintendontPath;
+  });
+  ipcMain.removeAllListeners('resetSlippiNintendontPath');
+  ipcMain.handle('resetSlippiNintendontPath', async () => {
+    slippiNintendontVersion = await getSlippiNintendontVersion(
+      slippiNintendontRootPath,
+    );
+
+    store.set('customSlippiNintendontPath', '');
+    customSlippiNintendontPath = '';
+    return customSlippiNintendontPath;
   });
 
   let codePath = store.get('codePath', '');
@@ -100,7 +151,6 @@ export default function setupIPC(mainWindow: BrowserWindow) {
   ipcMain.removeAllListeners('getSdCards');
   ipcMain.handle('getSdCards', getSdCards);
 
-  const xmlParser = new XMLParser({ parseTagValue: false });
   let forwarderVersion = '';
   ipcMain.removeAllListeners('getForwarderVersion');
   ipcMain.handle('getForwarderVersion', async () => {
@@ -125,29 +175,8 @@ export default function setupIPC(mainWindow: BrowserWindow) {
     return version;
   });
 
-  let slippiNintendontVersion = '';
   ipcMain.removeAllListeners('getSlippiNintendontVersion');
-  ipcMain.handle('getSlippiNintendontVersion', async () => {
-    if (slippiNintendontVersion) {
-      return slippiNintendontVersion;
-    }
-
-    const metaXmlBuffer = await readFile(
-      path.join(slippiNintendontRootPath, 'meta.xml'),
-    );
-    const metaObj = xmlParser.parse(metaXmlBuffer);
-    if (metaObj?.app?.name !== 'Slippi Nintendont') {
-      throw new Error('bundled meta.xml app name');
-    }
-
-    const { version } = metaObj.app;
-    if (typeof version !== 'string') {
-      throw new Error('bundled meta.xml app version');
-    }
-
-    slippiNintendontVersion = version;
-    return version;
-  });
+  ipcMain.handle('getSlippiNintendontVersion', () => slippiNintendontVersion);
 
   const keyToProgress = new Map<
     string,

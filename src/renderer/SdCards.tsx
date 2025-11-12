@@ -203,22 +203,20 @@ function SdCardEl({
 }
 
 export default function SdCards({
+  slippiNintendontVersion,
   openErrorMessage,
 }: {
+  slippiNintendontVersion: string;
   openErrorMessage: (message: string) => void;
 }) {
   const [sdCards, setSdCards] = useState<SdCard[]>([]);
   const [forwarderVersion, setForwarderVersion] = useState('');
-  const [slippiNintendontVersion, setSlippiNintendontVersion] = useState('');
   useEffect(() => {
     (async () => {
       const sdCardsPromise = window.electron.getSdCards();
       const forwarderVersionPromise = window.electron.getForwarderVersion();
-      const slippiNintendontVersionPromise =
-        window.electron.getSlippiNintendontVersion();
       setSdCards(await sdCardsPromise);
       setForwarderVersion(await forwarderVersionPromise);
-      setSlippiNintendontVersion(await slippiNintendontVersionPromise);
     })();
   }, []);
 

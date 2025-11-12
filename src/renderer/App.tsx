@@ -1,4 +1,4 @@
-import { Album } from '@mui/icons-material';
+import { Album, Restore, VideogameAsset } from '@mui/icons-material';
 import {
   Dialog,
   DialogContent,
@@ -23,11 +23,19 @@ export default function App() {
   }, []);
 
   const [isoPath, setIsoPath] = useState('');
+  const [slippiNintendontPath, setSlippiNintendontPath] = useState('');
+  const [slippiNintendontVersion, setSlippiNintendontVersion] = useState('');
 
   useEffect(() => {
     (async () => {
       const isoPathPromise = window.electron.getIsoPath();
+      const slippiNintendontPathPromise =
+        window.electron.getSlippiNintendontPath();
+      const slippiNintendontVersionPromise =
+        window.electron.getSlippiNintendontVersion();
       setIsoPath(await isoPathPromise);
+      setSlippiNintendontPath(await slippiNintendontPathPromise);
+      setSlippiNintendontVersion(await slippiNintendontVersionPromise);
     })();
   }, []);
 
@@ -56,8 +64,53 @@ export default function App() {
           </IconButton>
         </Tooltip>
       </Stack>
+      <Stack direction="row">
+        <InputBase
+          disabled
+          size="small"
+          value={
+            slippiNintendontPath
+              ? `Custom Slippi Nintendont version: ${slippiNintendontVersion}`
+              : `Default Slippi Nintendont version: ${slippiNintendontVersion}`
+          }
+          style={{ flexGrow: 1 }}
+        />
+        {slippiNintendontPath && (
+          <Tooltip arrow title="Reset to default Slippi Nintendont">
+            <IconButton
+              onClick={async () => {
+                setSlippiNintendontPath(
+                  await window.electron.resetSlippiNintendontPath(),
+                );
+                setSlippiNintendontVersion(
+                  await window.electron.getSlippiNintendontVersion(),
+                );
+              }}
+            >
+              <Restore />
+            </IconButton>
+          </Tooltip>
+        )}
+        <Tooltip arrow title="Set Slippi Nintendont">
+          <IconButton
+            onClick={async () => {
+              setSlippiNintendontPath(
+                await window.electron.chooseSlippiNintendontPath(),
+              );
+              setSlippiNintendontVersion(
+                await window.electron.getSlippiNintendontVersion(),
+              );
+            }}
+          >
+            <VideogameAsset />
+          </IconButton>
+        </Tooltip>
+      </Stack>
       <ConfigEl />
-      <SdCards openErrorMessage={openErrorMessage} />
+      <SdCards
+        slippiNintendontVersion={slippiNintendontVersion}
+        openErrorMessage={openErrorMessage}
+      />
       <Version />
       <Dialog
         open={errorOpen}
