@@ -38,7 +38,7 @@ export default function Version() {
         <Fab
           onClick={() => setOpen(true)}
           size="small"
-          style={{ position: 'absolute', bottom: 8, left: 8 }}
+          style={{ position: 'fixed', bottom: 8, left: 8 }}
         >
           <InfoOutline />
         </Fab>
