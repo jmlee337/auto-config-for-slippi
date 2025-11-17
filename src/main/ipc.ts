@@ -253,15 +253,24 @@ export default async function setupIPC(mainWindow: BrowserWindow) {
         await mkdir(appPath, { recursive: true });
         await Promise.all([
           copyFile(
-            path.join(slippiNintendontRootPath, 'boot.dol'),
+            path.join(
+              customSlippiNintendontPath || slippiNintendontRootPath,
+              'boot.dol',
+            ),
             path.join(appPath, 'boot.dol'),
           ),
           copyFile(
-            path.join(slippiNintendontRootPath, 'icon.png'),
+            path.join(
+              customSlippiNintendontPath || slippiNintendontRootPath,
+              'icon.png',
+            ),
             path.join(appPath, 'icon.png'),
           ),
           copyFile(
-            path.join(slippiNintendontRootPath, 'meta.xml'),
+            path.join(
+              customSlippiNintendontPath || slippiNintendontRootPath,
+              'meta.xml',
+            ),
             path.join(appPath, 'meta.xml'),
           ),
         ]);
