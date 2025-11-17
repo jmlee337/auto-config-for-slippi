@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { lt } from 'semver';
+import { lt, valid } from 'semver';
 
 export default function Version() {
   const [version, setVersion] = useState('');
@@ -26,7 +26,11 @@ export default function Version() {
       const initVersionLatest = await versionLatestPromise;
       setVersion(initVersion);
       setVersionLatest(initVersionLatest);
-      if (initVersionLatest && lt(initVersion, initVersionLatest)) {
+      if (
+        valid(initVersion) &&
+        valid(initVersionLatest) &&
+        lt(initVersion, initVersionLatest)
+      ) {
         setOpen(true);
       }
     })();
@@ -58,27 +62,29 @@ export default function Version() {
           <DialogTitle>Auto Config for Slippi</DialogTitle>
           <Typography variant="caption">v{version}</Typography>
         </Stack>
-        {version && versionLatest && lt(version, versionLatest) && (
-          <DialogContent>
-            <Alert
-              severity="warning"
-              style={{ marginTop: '8px' }}
-              action={
-                <Button
-                  endIcon={<CloudDownload />}
-                  variant="contained"
-                  onClick={() => {
-                    window.electron.update();
-                  }}
-                >
-                  Quit and download
-                </Button>
-              }
-            >
-              Update available! v{versionLatest}
-            </Alert>
-          </DialogContent>
-        )}
+        {valid(version) &&
+          valid(versionLatest) &&
+          lt(version, versionLatest) && (
+            <DialogContent>
+              <Alert
+                severity="warning"
+                style={{ marginTop: '8px' }}
+                action={
+                  <Button
+                    endIcon={<CloudDownload />}
+                    variant="contained"
+                    onClick={() => {
+                      window.electron.update();
+                    }}
+                  >
+                    Quit and download
+                  </Button>
+                }
+              >
+                Update available! v{versionLatest}
+              </Alert>
+            </DialogContent>
+          )}
       </Dialog>
     </>
   );
