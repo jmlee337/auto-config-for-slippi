@@ -75,4 +75,5 @@ export type Config = {
   gameplay: Gameplay;
   widescreen: Widescreen;
   safety: boolean;
+  stealthAutoBoot: boolean;
 };

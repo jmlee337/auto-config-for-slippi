@@ -12,6 +12,7 @@ import path from 'path';
 import { XMLParser } from 'fast-xml-parser';
 import { list } from 'drivelist';
 import { app } from 'electron';
+import { gt, valid } from 'semver';
 import isValidISO from './iso';
 import { Config, SdCard, Video } from '../common/types';
 
@@ -22,6 +23,12 @@ type RemovableDrive = {
 };
 
 const xmlParser = new XMLParser({ parseTagValue: false });
+
+function canEnableStealthAutoboot(slippiNintendontVersion: string) {
+  return (
+    !valid(slippiNintendontVersion) || gt(slippiNintendontVersion, '1.13.0')
+  );
+}
 
 async function getSdCard(
   removableDrive: RemovableDrive,
@@ -253,6 +260,15 @@ export async function writeNincfg(
           : path.join(__dirname, '..', '..', 'assets', 'GALE01.gct'),
         dstPath,
       );
+    }
+  }
+  if (canEnableStealthAutoboot(sdCard.slippiNintendontVersion)) {
+    if (config.stealthAutoBoot) {
+      await writeFile(path.join(sdCard.key, 'enable_stealth_autoboot.txt'), '');
+    } else {
+      await rm(path.join(sdCard.key, 'enable_stealth_autoboot.txt'), {
+        force: true,
+      });
     }
   }
 }

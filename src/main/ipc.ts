@@ -137,6 +137,9 @@ export default async function setupIPC(mainWindow: BrowserWindow) {
   if (!config.video) {
     config.video = Video.AUTO;
   }
+  if (typeof config.stealthAutoBoot !== 'boolean') {
+    config.stealthAutoBoot = true;
+  }
   ipcMain.removeAllListeners('getConfig');
   ipcMain.handle('getConfig', () => config);
   ipcMain.removeAllListeners('setConfig');

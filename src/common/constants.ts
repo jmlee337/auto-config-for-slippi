@@ -24,4 +24,5 @@ export const DEFAULT_CONFIG: Config = {
   gameplay: Gameplay.OFF,
   widescreen: Widescreen.OFF,
   safety: true,
+  stealthAutoBoot: true,
 };

@@ -481,6 +481,43 @@ export default function ConfigEl() {
                 </FormControl>
               </ListItem>
             </List>
+            <List
+              disablePadding
+              style={{
+                width: '244px',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <ListItem disablePadding>
+                <FormControlLabel
+                  label="Stealth Auto Boot"
+                  labelPlacement="start"
+                  style={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    height: '40px',
+                    margin: 0,
+                    width: '100%',
+                  }}
+                  control={
+                    <Switch
+                      size="small"
+                      checked={config.stealthAutoBoot}
+                      onChange={async (ev: ChangeEvent<HTMLInputElement>) => {
+                        const newConfig: Config = {
+                          ...config,
+                          stealthAutoBoot: ev.target.checked,
+                        };
+                        await window.electron.setConfig(newConfig);
+                        setConfig(newConfig);
+                      }}
+                    />
+                  }
+                />
+              </ListItem>
+            </List>
             <Stack direction="row" justifyContent="end" width="100%">
               <Button
                 color="error"
