@@ -123,7 +123,8 @@ export default async function getSdCards(): Promise<SdCard[]> {
         !drive.error &&
         drive.isRemovable &&
         drive.size !== null &&
-        !drive.isVirtual,
+        !drive.isVirtual &&
+        drive.mountpoints.length > 0,
     )
     .map(
       (drive): RemovableDrive => ({
