@@ -53,7 +53,7 @@ export default function ConfigEl() {
             style={{ flexGrow: 1 }}
           />
           {codePath && (
-            <Tooltip arrow title="Reset to default code file">
+            <Tooltip arrow placement="left" title="Reset to default code file">
               <IconButton
                 onClick={async () => {
                   setCodePath(await window.electron.resetCodePath());
@@ -63,7 +63,11 @@ export default function ConfigEl() {
               </IconButton>
             </Tooltip>
           )}
-          <Tooltip arrow title="Set code file">
+          <Tooltip
+            arrow
+            placement={codePath ? 'bottom' : 'left'}
+            title="Set code file"
+          >
             <IconButton
               onClick={async () => {
                 setCodePath(await window.electron.chooseCodePath());

@@ -48,7 +48,7 @@ export default function App() {
           value={isoPath || 'Set Melee ISO path...'}
           style={{ flexGrow: 1 }}
         />
-        <Tooltip arrow title="Set Melee ISO path">
+        <Tooltip arrow placement="left" title="Set Melee ISO path">
           <IconButton
             onClick={async () => {
               try {
@@ -76,7 +76,11 @@ export default function App() {
           style={{ flexGrow: 1 }}
         />
         {slippiNintendontPath && (
-          <Tooltip arrow title="Reset to default Slippi Nintendont">
+          <Tooltip
+            arrow
+            placement="left"
+            title="Reset to default Slippi Nintendont"
+          >
             <IconButton
               onClick={async () => {
                 setSlippiNintendontPath(
@@ -91,7 +95,11 @@ export default function App() {
             </IconButton>
           </Tooltip>
         )}
-        <Tooltip arrow title="Set Slippi Nintendont">
+        <Tooltip
+          arrow
+          placement={slippiNintendontPath ? 'bottom' : 'left'}
+          title="Set Slippi Nintendont"
+        >
           <IconButton
             onClick={async () => {
               setSlippiNintendontPath(

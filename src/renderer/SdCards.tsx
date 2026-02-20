@@ -169,7 +169,7 @@ function SdCardEl({
           value={sdCard.key}
           style={{ flexGrow: 1 }}
         />
-        <Tooltip arrow title="Eject">
+        <Tooltip arrow placement="left" title="Eject">
           <IconButton
             disabled={ejecting}
             onClick={async () => {
@@ -263,7 +263,7 @@ export default function SdCards({
             style={{ flexGrow: 1 }}
           />
           {sdCards.length > 0 && (
-            <Tooltip arrow title="Eject">
+            <Tooltip arrow placement="left" title="Eject">
               <IconButton
                 disabled={ejecting}
                 onClick={async () => {
@@ -285,7 +285,7 @@ export default function SdCards({
               </IconButton>
             </Tooltip>
           )}
-          <Tooltip arrow title="Refresh">
+          <Tooltip arrow placement="top" title="Refresh">
             <IconButton disabled={refreshing} onClick={refresh}>
               <Refresh />
             </IconButton>
