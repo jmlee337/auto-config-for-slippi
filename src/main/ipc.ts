@@ -223,9 +223,13 @@ export default async function setupIPC(mainWindow: BrowserWindow) {
         });
       }
     });
-    mainWindow.webContents.send('progress', progresses);
+    try {
+      mainWindow.webContents.send('progress', progresses);
+    } catch {
+      // just catch, in case of mainWindow destroyed
+    }
   }, 1000);
-  app.on('will-quit', () => {
+  app.on('before-quit', () => {
     clearInterval(interval);
   });
 
