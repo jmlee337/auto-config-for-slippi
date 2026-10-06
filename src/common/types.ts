@@ -8,10 +8,8 @@ export type SdCard = {
 
 export enum UCF {
   OFF = 1,
-  UCF80 = 2,
-  STEALTH80 = 3,
-  UCF84 = 4,
-  STEALTH84 = 5,
+  UCF = 2,
+  STEALTH = 3,
 }
 
 export enum Version {

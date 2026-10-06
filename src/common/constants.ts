@@ -16,7 +16,7 @@ export const DEFAULT_CONFIG: Config = {
   autoBoot: true,
   video: Video.AUTO,
   replays: true,
-  ucf: UCF.STEALTH84,
+  ucf: UCF.STEALTH,
   pal: false,
   mods: Mods.STEALTH,
   lag: Lag.PDF,

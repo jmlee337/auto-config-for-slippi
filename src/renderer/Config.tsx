@@ -138,10 +138,8 @@ export default function ConfigEl() {
                   }}
                 >
                   <MenuItem value={UCF.OFF}>Off</MenuItem>
-                  <MenuItem value={UCF.UCF80}>UCF 0.8</MenuItem>
-                  <MenuItem value={UCF.STEALTH80}>Stealth 0.8</MenuItem>
-                  <MenuItem value={UCF.UCF84}>UCF 0.84</MenuItem>
-                  <MenuItem value={UCF.STEALTH84}>Stealth 0.84</MenuItem>
+                  <MenuItem value={UCF.UCF}>UCF</MenuItem>
+                  <MenuItem value={UCF.STEALTH}>Stealth</MenuItem>
                 </Select>
               </FormControl>
             </ListItem>
