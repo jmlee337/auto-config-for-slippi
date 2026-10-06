@@ -4,7 +4,7 @@
 	<coder>FIX94, crediar, Fizzi, meta, Nicolet, nikki</coder>
 	<version>1.13.3</version>
 	<release_date>20261006000000</release_date>
-	<git_hash>4e535b2</git_hash>
+	<git_hash>bea169e</git_hash>
 	<short_description>Gamecube Loader</short_description>
 	<long_description>A fork of Nintendont, designed specifically for Super Smash Bros. Melee.
 https://github.com/project-slippi/Nintendont
